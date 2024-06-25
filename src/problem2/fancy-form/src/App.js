@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react';
+import Select from 'react-select';
 
 function SwapForm({tokenInfo}){
   const [fromCurrency, setFromCurrency] = useState('');
@@ -11,31 +12,24 @@ function SwapForm({tokenInfo}){
     event.preventDefault();
 
     if (fromCurrency === toCurrency) {
-      setResult('Please select different currencies.');
+      alert('Please select different currencies');
       return;
     }
 
     const amountNumber = parseFloat(amount);
     if (isNaN(amountNumber) || amountNumber <= 0) {
-      setResult('Please enter a valid amount.');
+      alert('Please enter a valid amount.');
       return;
     }
 
     const fromPrice = tokenInfo[fromCurrency].price;
     const toPrice = tokenInfo[toCurrency].price;
-    const convertedAmount = (amountNumber * fromPrice) / toPrice;
+    const convertedAmount = calculateExchangeRate(amount, fromPrice, toPrice);
+
+    
 
     setResult(`${amount} ${fromCurrency} = ${convertedAmount.toFixed(6)} ${toCurrency}`);
   };
-
-  const getValidTokens = () => {
-    return Object.keys(tokenInfo);
-  };
-
-  const validTokens = getValidTokens().map((token) => ({
-    name: tokenInfo[token].currency,
-    image: tokenInfo[token].image,
-  }));
 
   return (
     <div className="container">
@@ -45,13 +39,13 @@ function SwapForm({tokenInfo}){
           label="From"
           currency={fromCurrency}
           onCurrencyChange={(e) => setFromCurrency(e.target.value)}
-          tokens={validTokens}
+          tokens={tokenInfo}
         />
         <CurrencySelect
           label="To"
           currency={toCurrency}
           onCurrencyChange={(e) => setToCurrency(e.target.value)}
-          tokens={validTokens}
+          tokens={tokenInfo}
         />
         <AmountInput
           amount={amount}
@@ -67,24 +61,29 @@ function SwapForm({tokenInfo}){
 }
 
 function CurrencySelect({label, currency, onCurrencyChange, tokens}){
+  const options = Object.keys(tokens).map((key) => ({
+    value: key,
+    label: key,
+    image: tokens[key].image,
+  }));
+
   return (
     <div className="form-group">
       <label htmlFor={`${label.toLowerCase()}-currency`}>{label}:</label>
-      <select
+      
+      <Select
         id={`${label.toLowerCase()}-currency`}
-        value={currency}
+        value={options.find(option => option.value === currency)}
         onChange={onCurrencyChange}
-        required
-      >
-        <option value="">Select Currency</option>
-        {tokens.map((token) => (
-          <option key={token.name} value={token.name}>
-            {token.image && <img src={token.image} alt={token.name} className="token-image" />}
-            {token.name}
-          </option>
-        ))}
+        options={options}
+        formatOptionLabel={({ value, label, image }) => (
+          <div className="option-label">
+            <img src={image} alt={label} className="token-image" />
+            {label}
+          </div>
+        )}
+      />
 
-      </select>
     </div>
   );
 }
@@ -107,7 +106,7 @@ const AmountInput = ({ amount, onAmountChange }) => {
 };
 
 function calculateExchangeRate({amount, fromPrice, toPrice}){
-  return amount * (fromPrice/toPrice);
+  return (amount * fromPrice)/toPrice;
 }
 
 const SwapResult = ({ result }) => {
@@ -119,7 +118,7 @@ const SwapResult = ({ result }) => {
 };
 
 const normalizeTokenName = (name) => {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  return name.toUpperCase();
 };
 
 const response = await fetch('https://interview.switcheo.com/prices.json');
@@ -129,22 +128,22 @@ const uniqueTokens = {};
 data.forEach(token => {
   const normalizeName = normalizeTokenName(token.currency)
   if (!uniqueTokens[normalizeName]) {
+
     uniqueTokens[normalizeName] = {
       ...token,
-      image: require(`../public/images/${normalizeName}.svg`).default,
+      image: require(`./images/${normalizeName}.svg`),
     };
   }
+
 });
 
 
-
-console.log(data)
 console.log(uniqueTokens)
 
 function App() {
   return (
     <div>
-      <SwapForm tokenInfo={data}/>
+      <SwapForm tokenInfo={uniqueTokens}/>
     </div>
   );
 }
