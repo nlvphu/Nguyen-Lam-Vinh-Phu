@@ -1,6 +1,6 @@
 # Currency Swap Form
-![alt text](<Screenshot from 2024-06-26 12-51-36.png>)
-![alt text](<Screenshot from 2024-06-26 12-51-45.png>)
+![alt text](<img src="./src/Screenshot from 2024-06-26 12-51-36.png">)
+![alt text](<img src="./src/Screenshot from 2024-06-26 12-51-45.png">)
 
 This project is a simple and interactive currency swap form built using React. Users can swap assets from one currency to another, with input validation and real-time price fetching.
 
