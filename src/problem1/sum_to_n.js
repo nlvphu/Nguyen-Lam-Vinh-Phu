@@ -29,6 +29,30 @@ var sum_to_n_c = function(n) {
     return n + sum_to_n_c(n-1);
 };
 
-console.log(sum_to_n_a(4))
-console.log(sum_to_n_b(4))
-console.log(sum_to_n_c(4))
+console.log(sum_to_n_a(0)); // Output: 0
+console.log(sum_to_n_b(0)); // Output: 0
+console.log(sum_to_n_c(0)); // Output: 0
+
+console.log(sum_to_n_a(1)); // Output: 1
+console.log(sum_to_n_b(1)); // Output: 1
+console.log(sum_to_n_c(1)); // Output: 1
+
+console.log(sum_to_n_a(2)); // Output: 3
+console.log(sum_to_n_b(2)); // Output: 3
+console.log(sum_to_n_c(2)); // Output: 3
+
+console.log(sum_to_n_a(3)); // Output: 6
+console.log(sum_to_n_b(3)); // Output: 6
+console.log(sum_to_n_c(3)); // Output: 6
+
+console.log(sum_to_n_a(10)); // Output: 55
+console.log(sum_to_n_b(10)); // Output: 55
+console.log(sum_to_n_c(10)); // Output: 55
+
+console.log(sum_to_n_a(100)); // Output: 5050
+console.log(sum_to_n_b(100)); // Output: 5050
+console.log(sum_to_n_c(100)); // Output: 5050
+
+console.log(sum_to_n_a(1000)); // Output: 500500
+console.log(sum_to_n_b(1000)); // Output: 500500
+console.log(sum_to_n_c(1000)); // Output: 500500
