@@ -6,7 +6,7 @@ const path = require('path');
 const file = '/home/weed/workspace/src/github.com/nlvphu/Nguyen-Lam-Vinh-Phu/src/problem2/fancy-form';
 
 const directoryPath = file +'/public/asset';
-const newFolderPath = file +'/public/images';
+const newFolderPath = file +'/src/images';
 
 // Function to capitalize file name
 const capitalizeFileName = (fileName) => {

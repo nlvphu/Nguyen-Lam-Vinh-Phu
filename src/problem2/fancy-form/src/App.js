@@ -12,21 +12,19 @@ function SwapForm({tokenInfo}){
     event.preventDefault();
 
     if (fromCurrency === toCurrency) {
-      alert('Please select different currencies');
+      setResult('Please select different currencies');
       return;
     }
 
     const amountNumber = parseFloat(amount);
     if (isNaN(amountNumber) || amountNumber <= 0) {
-      alert('Please enter a valid amount.');
+      setResult('Please enter a valid amount.');
       return;
     }
 
     const fromPrice = tokenInfo[fromCurrency].price;
     const toPrice = tokenInfo[toCurrency].price;
-    const convertedAmount = calculateExchangeRate(amount, fromPrice, toPrice);
-
-    
+    const convertedAmount = (amountNumber * fromPrice) / toPrice;
 
     setResult(`${amount} ${fromCurrency} = ${convertedAmount.toFixed(6)} ${toCurrency}`);
   };
@@ -38,13 +36,13 @@ function SwapForm({tokenInfo}){
         <CurrencySelect
           label="From"
           currency={fromCurrency}
-          onCurrencyChange={(e) => setFromCurrency(e.target.value)}
+          onCurrencyChange={(selectedOption) => setFromCurrency(selectedOption.value)}
           tokens={tokenInfo}
         />
         <CurrencySelect
           label="To"
           currency={toCurrency}
-          onCurrencyChange={(e) => setToCurrency(e.target.value)}
+          onCurrencyChange={(selectedOption) => setToCurrency(selectedOption.value)}
           tokens={tokenInfo}
         />
         <AmountInput
@@ -54,6 +52,7 @@ function SwapForm({tokenInfo}){
         <div className="form-group">
           <button type="submit">Swap</button>
         </div>
+        
         <SwapResult result={result} />
       </form>
     </div>
@@ -70,7 +69,7 @@ function CurrencySelect({label, currency, onCurrencyChange, tokens}){
   return (
     <div className="form-group">
       <label htmlFor={`${label.toLowerCase()}-currency`}>{label}:</label>
-      
+
       <Select
         id={`${label.toLowerCase()}-currency`}
         value={options.find(option => option.value === currency)}
@@ -79,7 +78,7 @@ function CurrencySelect({label, currency, onCurrencyChange, tokens}){
         formatOptionLabel={({ value, label, image }) => (
           <div className="option-label">
             <img src={image} alt={label} className="token-image" />
-            {label}
+            {value}
           </div>
         )}
       />
@@ -105,9 +104,6 @@ const AmountInput = ({ amount, onAmountChange }) => {
   );
 };
 
-function calculateExchangeRate({amount, fromPrice, toPrice}){
-  return (amount * fromPrice)/toPrice;
-}
 
 const SwapResult = ({ result }) => {
   return (
@@ -121,6 +117,8 @@ const normalizeTokenName = (name) => {
   return name.toUpperCase();
 };
 
+
+//assume prices in this case are fixed
 const response = await fetch('https://interview.switcheo.com/prices.json');
 const data = await response.json();
 
@@ -136,9 +134,6 @@ data.forEach(token => {
   }
 
 });
-
-
-console.log(uniqueTokens)
 
 function App() {
   return (

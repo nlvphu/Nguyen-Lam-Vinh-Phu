@@ -1,8 +1,73 @@
 body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f2f5;
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: center;
-  min-width: 360px;
-  font-family: Arial, Helvetica, sans-serif;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+select, input[type="number"], button {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: rgba(27, 27, 216, 0.785);
+  font-size: large;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgba(27, 27, 216, 0.785);
+}
+
+.result {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.token-image {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+}
+
+#error-message {
+  color: red;
+  margin-top: 10px;
 }
